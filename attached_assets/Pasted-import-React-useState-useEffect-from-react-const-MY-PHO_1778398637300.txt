@@ -1,0 +1,83 @@
+import React, { useState, useEffect } from 'react';
+
+// הגדרות העסק שלך - שנה כאן!
+const MY_PHONE_NUMBER = "97250XXXXXXX"; // שים כאן את הטלפון שלך בלי ה-0 בהתחלה
+const MONTHLY_PRICE = "50";
+const YEARLY_PRICE = "500";
+
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [isPaid, setIsPaid] = useState(false);
+  const [daysLeft, setDaysLeft] = useState(0);
+
+  // בדיקת סטטוס תשלום ותוקף
+  useEffect(() => {
+    const savedUser = localStorage.getItem('driver_user');
+    const expiryDate = localStorage.getItem('expiry_date');
+    
+    if (savedUser) {
+      setUser(savedUser);
+      if (expiryDate) {
+        const remaining = Math.ceil((new Date(expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+        if (remaining > 0) {
+          setIsPaid(true);
+          setDaysLeft(remaining);
+        } else {
+          setIsPaid(false);
+        }
+      }
+    }
+  }, []);
+
+  // פונקציית רישום פשוטה
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const name = e.target.username.value;
+    localStorage.setItem('driver_user', name);
+    setUser(name);
+  };
+
+  // מסך תשלום
+  if (!user || !isPaid) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'Arial' }}>
+        <h1>מוניטון - כניסת נהגים</h1>
+        {!user ? (
+          <form onSubmit={handleRegister}>
+            <input name="username" placeholder="שם מלא" required style={inputStyle} /><br/>
+            <button type="submit" style={btnStyle}>הרשמה למערכת</button>
+          </form>
+        ) : (
+          <div>
+            <h3>שלום {user}, המנוי שלך לא פעיל</h3>
+            <p>כדי להשתמש במחשבון יש לבצע תשלום:</p>
+            <div style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
+              <p>חודש: {MONTHLY_PRICE}₪ | שנה: {YEARLY_PRICE}₪</p>
+              <a href={`https://wa.me{MY_PHONE_NUMBER}?text=היי, אני ${user}, שילמתי בביט עבור מנוי חודשי. אנא הפעל לי את החשבון.`} 
+                 style={bitBtnStyle}>שלם בביט והפעל חשבון</a>
+            </div>
+            <p style={{fontSize: '12px'}}>*לאחר התשלום, המנהל יפעיל את חשבונך תוך זמן קצר*</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // האפליקציה עצמה (המחשבון שלך)
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <header style={{display: 'flex', justifyContent: 'space-between'}}>
+        <span>שלום {user}</span>
+        <span style={{color: 'green'}}>מנוי פעיל: עוד {daysLeft} ימים</span>
+      </header>
+      {/* כאן נכנס קוד המחשבון המקורי שלך */}
+      <h1>מחשבון מוניטון פעיל</h1>
+      <p>כאן הנהג יכול לבצע את החישובים...</p>
+    </div>
+  );
+}
+
+// עיצוב כפתורים
+const inputStyle = { padding: '10px', margin: '10px', width: '80%', borderRadius: '5px' };
+const btnStyle = { padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '5px' };
+const bitBtnStyle = { display: 'block', padding: '15px', background: '#25D366', color: 'white', textDecoration: 'none', borderRadius: '10px', fontWeight: 'bold' };

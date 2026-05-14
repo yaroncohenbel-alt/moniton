@@ -1,0 +1,141 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: mealPlans
+    description: Meal planning operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /meal-plans/generate:
+    post:
+      operationId: generateMealPlan
+      tags: [mealPlans]
+      summary: Generate a weekly meal plan
+      description: Uses AI to generate a personalized weekly meal plan with grocery list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateMealPlanRequest"
+      responses:
+        "200":
+          description: Generated weekly meal plan with grocery list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeeklyMealPlan"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    GenerateMealPlanRequest:
+      type: object
+      properties:
+        preferences:
+          type: array
+          items:
+            type: string
+          description: Dietary preferences and restrictions
+        budget:
+          type: string
+          description: Budget level (low, medium, high)
+        servings:
+          type: integer
+          description: Number of servings per meal
+      required:
+        - preferences
+        - budget
+        - servings
+    MealItem:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        cuisine:
+          type: string
+        prepTime:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: string
+      required:
+        - name
+        - description
+        - cuisine
+        - prepTime
+        - ingredients
+    DayMealPlan:
+      type: object
+      properties:
+        day:
+          type: string
+        breakfast:
+          $ref: "#/components/schemas/MealItem"
+        lunch:
+          $ref: "#/components/schemas/MealItem"
+        dinner:
+          $ref: "#/components/schemas/MealItem"
+      required:
+        - day
+        - breakfast
+        - lunch
+        - dinner
+    GroceryItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        amount:
+          type: string
+        category:
+          type: string
+      required:
+        - id
+        - name
+        - amount
+        - category
+    WeeklyMealPlan:
+      type: object
+      properties:
+        days:
+          type: array
+          items:
+            $ref: "#/components/schemas/DayMealPlan"
+        groceryList:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroceryItem"
+      required:
+        - days
+        - groceryList

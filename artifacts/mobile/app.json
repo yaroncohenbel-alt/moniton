@@ -1,0 +1,85 @@
+{
+  "expo": {
+    "name": "Taxi Meter Pro",
+    "slug": "mobile",
+    "version": "1.2",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "moniton",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0D0D0D"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.moniton.app",
+      "infoPlist": {
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Taxi Meter Pro ממשיכה לעקוב אחרי המסלול גם כשהמסך נעול, כדי למדוד מרחק ולחשב מחיר מדויק.",
+        "NSLocationAlwaysUsageDescription": "Taxi Meter Pro ממשיכה לעקוב אחרי המסלול גם כשהמסך נעול, כדי למדוד מרחק ולחשב מחיר מדויק.",
+        "NSLocationWhenInUseUsageDescription": "Taxi Meter Pro צריכה גישה למיקום שלך כדי למדוד את המסלול ולחשב את המחיר.",
+        "UIBackgroundModes": ["location", "fetch"]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#0D0D0D"
+      },
+      "package": "com.moniton.app",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/images/icon.png",
+      "name": "Taxi Meter Pro",
+      "shortName": "Taxi Meter Pro",
+      "description": "מחשבון מונית חכם לישראל",
+      "themeColor": "#FFD60A",
+      "backgroundColor": "#0D0D0D",
+      "lang": "he",
+      "dir": "rtl"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://replit.com/"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Taxi Meter Pro צריכה גישה למיקום שלך כדי למדוד את המסלול.",
+          "locationAlwaysAndWhenInUsePermission": "Taxi Meter Pro ממשיכה לעקוב אחרי המסלול גם כשהמסך נעול.",
+          "locationAlwaysPermission": "Taxi Meter Pro ממשיכה לעקוב אחרי המסלול גם כשהמסך נעול.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#FFD60A",
+          "androidMode": "default",
+          "androidCollapsedTitle": "Taxi Meter Pro — נסיעה פעילה"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
